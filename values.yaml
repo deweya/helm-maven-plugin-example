@@ -1,0 +1,9 @@
+image:
+  repository: docker.io/deweya/spring-demo-app
+  
+containerPort: 8080
+
+probe:
+  enabled: true
+  settings:
+    initialDelaySeconds: 60

@@ -3,7 +3,7 @@
   
   <groupId>com.austindewey</groupId>
   <artifactId>spring-demo-app</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>spring-demo-app</name>
   
   <parent>
@@ -38,7 +38,7 @@
         <configuration>
           <images>
             <image>
-              <name>docker.io/deweya/spring-demo-app:1.0.0</name>
+              <name>docker.io/deweya/spring-demo-app:${project.version}</name>
             </image>
           </images>
         </configuration>
@@ -48,7 +48,38 @@
             <phase>install</phase>
             <goals>
               <goal>build</goal>
-              
+              <goal>push</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.austindewey</groupId>
+        <artifactId>helm-maven-plugin</artifactId>
+        <version>1.1.1</version>
+        <configuration>
+          <releaseName>spring-demo-app</releaseName>
+          <chart>
+            <name>onechart</name>
+            <version>0.36.0</version>
+            <repository>
+              <url>https://chart.onechart.dev</url>
+            </repository>
+          </chart>
+          <values>
+            <files>
+              <file>values.yaml</file>
+            </files>
+            <set>
+              <image.tag>${project.version}</image.tag>
+            </set>
+          </values>
+        </configuration>
+        <executions>
+          <execution>
+            <id>helm-upgrade</id>
+            <goals>
+              <goal>upgrade</goal>
             </goals>
           </execution>
         </executions>
